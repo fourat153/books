@@ -1,0 +1,681 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>build reusable firmware </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="026956db-c509-48dd-a0d0-2f872cd94bdc" class="page sans"><header><img class="page-cover-image" src="https://images-na.ssl-images-amazon.com/images/I/51N%2BBa1mYOL._AC_SY400_.jpg" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">🥰</span></div><h1 class="page-title">build reusable firmware </h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesText"><path d="M1.56738 3.25879H14.4258C14.7676 3.25879 15.0479 2.97852 15.0479 2.63672C15.0479 2.29492 14.7744 2.02148 14.4258 2.02148H1.56738C1.21875 2.02148 0.952148 2.29492 0.952148 2.63672C0.952148 2.97852 1.22559 3.25879 1.56738 3.25879ZM1.56738 6.84082H14.4258C14.7676 6.84082 15.0479 6.56055 15.0479 6.21875C15.0479 5.87695 14.7744 5.60352 14.4258 5.60352H1.56738C1.21875 5.60352 0.952148 5.87695 0.952148 6.21875C0.952148 6.56055 1.22559 6.84082 1.56738 6.84082ZM1.56738 10.4229H14.4258C14.7676 10.4229 15.0479 10.1426 15.0479 9.80078C15.0479 9.45898 14.7744 9.18555 14.4258 9.18555H1.56738C1.21875 9.18555 0.952148 9.45898 0.952148 9.80078C0.952148 10.1426 1.22559 10.4229 1.56738 10.4229ZM1.56738 14.0049H8.75879C9.10059 14.0049 9.38086 13.7246 9.38086 13.3828C9.38086 13.041 9.10742 12.7676 8.75879 12.7676H1.56738C1.21875 12.7676 0.952148 13.041 0.952148 13.3828C0.952148 13.7246 1.22559 14.0049 1.56738 14.0049Z"></path></svg></span>Author</th><td>jacob binigo </td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Fiction?</th><td><span class="selected-value select-value-color-gray">Non-Fiction</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>Genres</th><td><span class="selected-value select-value-color-blue">Technology</span></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Rating</th><td><span class="selected-value select-value-color-orange">5-Star</span></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesDate"><path d="M3.29688 14.4561H12.7031C14.1797 14.4561 14.9453 13.6904 14.9453 12.2344V3.91504C14.9453 2.45215 14.1797 1.69336 12.7031 1.69336H3.29688C1.82031 1.69336 1.05469 2.45215 1.05469 3.91504V12.2344C1.05469 13.6973 1.82031 14.4561 3.29688 14.4561ZM3.27637 13.1162C2.70898 13.1162 2.39453 12.8154 2.39453 12.2207V5.9043C2.39453 5.30273 2.70898 5.00879 3.27637 5.00879H12.71C13.2842 5.00879 13.6055 5.30273 13.6055 5.9043V12.2207C13.6055 12.8154 13.2842 13.1162 12.71 13.1162H3.27637ZM6.68066 7.38086H7.08398C7.33008 7.38086 7.41211 7.30566 7.41211 7.05957V6.66309C7.41211 6.41699 7.33008 6.3418 7.08398 6.3418H6.68066C6.44141 6.3418 6.35938 6.41699 6.35938 6.66309V7.05957C6.35938 7.30566 6.44141 7.38086 6.68066 7.38086ZM8.92285 7.38086H9.31934C9.56543 7.38086 9.64746 7.30566 9.64746 7.05957V6.66309C9.64746 6.41699 9.56543 6.3418 9.31934 6.3418H8.92285C8.67676 6.3418 8.59473 6.41699 8.59473 6.66309V7.05957C8.59473 7.30566 8.67676 7.38086 8.92285 7.38086ZM11.1582 7.38086H11.5547C11.8008 7.38086 11.8828 7.30566 11.8828 7.05957V6.66309C11.8828 6.41699 11.8008 6.3418 11.5547 6.3418H11.1582C10.9121 6.3418 10.8301 6.41699 10.8301 6.66309V7.05957C10.8301 7.30566 10.9121 7.38086 11.1582 7.38086ZM4.44531 9.58203H4.84863C5.09473 9.58203 5.17676 9.50684 5.17676 9.26074V8.86426C5.17676 8.61816 5.09473 8.54297 4.84863 8.54297H4.44531C4.20605 8.54297 4.12402 8.61816 4.12402 8.86426V9.26074C4.12402 9.50684 4.20605 9.58203 4.44531 9.58203ZM6.68066 9.58203H7.08398C7.33008 9.58203 7.41211 9.50684 7.41211 9.26074V8.86426C7.41211 8.61816 7.33008 8.54297 7.08398 8.54297H6.68066C6.44141 8.54297 6.35938 8.61816 6.35938 8.86426V9.26074C6.35938 9.50684 6.44141 9.58203 6.68066 9.58203ZM8.92285 9.58203H9.31934C9.56543 9.58203 9.64746 9.50684 9.64746 9.26074V8.86426C9.64746 8.61816 9.56543 8.54297 9.31934 8.54297H8.92285C8.67676 8.54297 8.59473 8.61816 8.59473 8.86426V9.26074C8.59473 9.50684 8.67676 9.58203 8.92285 9.58203ZM11.1582 9.58203H11.5547C11.8008 9.58203 11.8828 9.50684 11.8828 9.26074V8.86426C11.8828 8.61816 11.8008 8.54297 11.5547 8.54297H11.1582C10.9121 8.54297 10.8301 8.61816 10.8301 8.86426V9.26074C10.8301 9.50684 10.9121 9.58203 11.1582 9.58203ZM4.44531 11.7832H4.84863C5.09473 11.7832 5.17676 11.708 5.17676 11.4619V11.0654C5.17676 10.8193 5.09473 10.7441 4.84863 10.7441H4.44531C4.20605 10.7441 4.12402 10.8193 4.12402 11.0654V11.4619C4.12402 11.708 4.20605 11.7832 4.44531 11.7832ZM6.68066 11.7832H7.08398C7.33008 11.7832 7.41211 11.708 7.41211 11.4619V11.0654C7.41211 10.8193 7.33008 10.7441 7.08398 10.7441H6.68066C6.44141 10.7441 6.35938 10.8193 6.35938 11.0654V11.4619C6.35938 11.708 6.44141 11.7832 6.68066 11.7832ZM8.92285 11.7832H9.31934C9.56543 11.7832 9.64746 11.708 9.64746 11.4619V11.0654C9.64746 10.8193 9.56543 10.7441 9.31934 10.7441H8.92285C8.67676 10.7441 8.59473 10.8193 8.59473 11.0654V11.4619C8.59473 11.708 8.67676 11.7832 8.92285 11.7832Z"></path></svg></span>Date Finished</th><td><time>@January 5, 2016</time></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Notes Status</th><td><span class="selected-value select-value-color-green">Currently Reading</span></td></tr></tbody></table></header><div class="page-body"><h1 id="d0df5cf9-cb5d-425a-9e33-a1843929ee96" class="">🚀 The Book in 3 Sentences</h1><ol type="1" id="e3cb69d6-857d-415d-97c3-ec4e0ce880c3" class="numbered-list" start="1"><li>build a strong knowledge in building a reusable firmware </li></ol><ol type="1" id="6a67cef4-669f-4173-9814-a1cd1608979e" class="numbered-list" start="2"><li>well structured  book </li></ol><h1 id="dda8a146-4ff0-418e-8693-35b59312cbd6" class="">🎨 Impressions</h1><p id="3c81f09c-c08f-4ce3-8a71-2b3b16ce4785" class="">This is one of the three books that most changed my life (the others being  and  ).  </p><p id="854e6286-f5ec-4f60-85ee-7c0398a4d5a5" class="">It completely changed the way I thought about sharing stuff online, and encouraged me to start my blog in January 2016. </p><h2 id="c2a64484-536d-4019-b26e-1afc8f2671d1" class="">Who Should Read It? </h2><p id="e8b87a4a-9e3a-40c7-8715-e69887564b89" class="">I think this should be required reading for everyone in the world. If you’ve got an interest in creativity (of any sort) or entrepreneurship or business (of any sort), you should stop reading this and just read the book. </p><p id="cc84940f-1cde-44a5-85e0-7dfa9652f6f6" class="">Even if you don’t have the slightest interest in creativity, entrepreneurship or putting yourself out there in any capacity whatsoever, you should still read this because it’ll open up neural pathways and possibilities that you never knew existed. </p><p id="98620f43-525c-4ba3-8302-8633839fbcc9" class="">It also takes less than 30 minutes to read, so you’ve got no reason not to. </p><h1 id="f79c83d3-c64a-4608-8505-3ff8b512fc1f" class="">☘️ How the Book Changed Me </h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4bbcdf8b-abdb-4d0d-9a4d-9b9404f9fef0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">How my life / behaviour / thoughts / ideas have changed as a result of reading the book.</div></figure><ul id="b2eaddf8-d0ce-404e-b79b-b3934618212b" class="bulleted-list"><li style="list-style-type:disc">It made me more comfortable with sharing my thoughts and my work online</li></ul><ul id="dae98d45-22de-46a9-b2f0-90539e85fda4" class="bulleted-list"><li style="list-style-type:disc">It made me generally more comfortable with putting myself &#x27;out there&#x27;</li></ul><ul id="58f1fcd2-28a8-44c0-a96b-fb911d23adc8" class="bulleted-list"><li style="list-style-type:disc">It made me start my blog </li></ul><ul id="a4a8ff6c-653d-4abf-84f7-820dc7e77a44" class="bulleted-list"><li style="list-style-type:disc">Starting the blog was the first step to starting my YouTube channel a year later, and the YouTube channel changed my life </li></ul><h1 id="e6574a9b-ef9c-4d16-94bc-194dfbccbcdb" class="">✍️ My Top 3 Quotes</h1><ul id="20f8484a-8ab2-4c03-af42-88d1e239463e" class="bulleted-list"><li style="list-style-type:disc">Amateurs know that contributing something is better than contributing nothing </li></ul><ul id="c51f56f4-eda0-40c3-a56a-14d4c65bcf53" class="bulleted-list"><li style="list-style-type:disc">Carving out a space for yourself online, somewhere where you can express yourself and share your work, is still one of the best possible investments you can make with your time </li></ul><ul id="73ac5789-dbfe-442e-b2f4-fbea4f3dc849" class="bulleted-list"><li style="list-style-type:disc">The minute you learn something, turn around and teach it to others. Share your reading list. Point to helpful reference materials. Create some tutorials and post them online. Use pictures, words, and video. Take people step-by-step through part of your process. As blogger Kathy Sierra says, “make people better at something they want to be better at”</li></ul><h1 id="94ef6166-8eca-4ec9-b635-2213355138ed" class="">📒 Summary + Notes</h1><h2 id="fdb9db0e-358f-4e52-9181-6ae2a1c57fd3" class="">A new way of operating</h2><p id="ea91c758-e369-4740-ba55-f31a6eca63da" class="">The world has changed. It’s no longer enough to just <em>make </em>stuff and hope that people find it. You have to be <em>findable. </em></p><p id="3ad9142a-28cf-429d-b4d7-394c834fd11b" class="">Think of your work as a never-ending process. You can share your process in a way that attracts others. </p><blockquote id="de24c71b-4a1b-401f-afd3-5d33e3a27b42" class="">Imagine if your next boss didn’t have to read your résumé because he already reads your blog. Imagine being a student and getting your first gig based on a school project you posted online. Imagine losing your job but having a social network of people familiar with your work and ready to help you find a new one. Imagine turning a side project or a hobby into your profession because you had a following that could support you.</blockquote><blockquote id="25d1ae07-1a3f-4b3d-860e-819b1b889c99" class="">Or imagine something simpler and just as satisfying: spending the majority of your time, energy, and attention practicing a craft, learning a trade, or running a business, while also allowing for the possibility that your work might attract a group of people who share your interests. </blockquote><blockquote id="afdc9488-c29e-4148-af07-7217b8868a87" class="">All you have to do is show your work.</blockquote><h1 id="ed08191d-16e5-4a6f-90cb-51968d838ec4" class="">chapter 1 </h1><h2 id="cb146c87-aea6-43db-a1d1-c55e6bc61045" class="">1. concept for developing reusable firmware  </h2><h3 id="892ecdaa-2b48-48df-8e8e-3b38c89afd6f" class="">why code reuse matter </h3><p id="2ad6169c-5296-4c60-9c25-30f11b3c4f89" class="">developing a  reusable firmware , we need a decoupled firmware with the hardware </p><p id="65d48b75-3223-4f33-9fd2-d04e4d3f5b5c" class="">decrease time to market </p><p id="4974da9b-1f8b-420a-b136-c00b7a308792" class="">decrease project cost </p><p id="3a44087b-2e94-4a58-8132-d9f38a794f01" class="">improving product quality </p><p id="4abdde37-710b-440f-8a57-1f408a29037d" class="">software must be modular , broken in manageable pieces with minimal dependencies </p><h3 id="be879456-51cb-4219-9272-6e546b31f380" class="">Portability </h3><p id="0b4cf806-3be4-4628-b05c-c71390fb3f2f" class="">Portable firmware is embedded software that is designed to run on more than one
+microcontroller or processor architecture with little or no modification.</p><h3 id="da16c704-c577-4ab9-bd39-fb87ad37aafd" class="">Modularity </h3><p id="f6748560-a22d-4d5c-a2b9-65e601546315" class="">Being able to find functions or code of interest very quickly and easily
+• Improved software understanding through the modules’ organization
+• The ability to copy modules and use them in new applications
+• The ability to remove modules from a program and replace them with
+new functionality</p><h3 id="d94daa35-d875-4e7b-8fe4-98eaa29fe58a" class="">Module coupling and cohesion </h3><p id="52d0a455-7252-4dce-922a-fd7c41edd137" class="">coupling refers how closely related different modules to each others </p><p id="4f656636-be36-4591-afd0-b7eda4d81353" class="">cohesion refers to the degree to which module element belong together </p><p id="92f9fcf1-2bf7-47c3-97a9-00422a30367b" class="">a reusable firmware is loosely coupled and had higher cohesion </p><h3 id="fcdb54fc-6b32-4a06-b0b9-c43b0b132d40" class="">Following the standards </h3><p id="4eeee174-097c-4f90-b83c-a684c8d4dd34" class="">choose a widely supported standards c99 , c90 </p><p id="c52a1064-dac3-4123-a691-c2be5fab2adb" class="">avoid extension </p><p id="1b214858-3168-44c5-ae02-466a3fef63d5" class="">use standard like misra c , secure c</p><h3 id="0f845dcf-9ecf-4aa1-b1dc-493688e7bdd4" class="">Portability  issues </h3><p id="cd9d7e58-ccf9-4e5a-82b4-63e3c02e9f8a" class="">padding problem </p><p id="e51a40a0-1543-4691-a067-bdde18ddf769" class="">size of the data imposed by the compiler : int = 4 bytes , int = 2 bytes </p><p id="4acdcbd1-0ab7-4758-a635-1c16ed6f3e8f" class="">bitfield depend on the compiler </p><p id="00d9f4d3-3bac-499e-b355-e33efc02ca5e" class="">preprocessor directives depend on the compiler </p><p id="1590adac-ed83-4142-bc3e-9a904e9df685" class="">#pragma depend also on the the complier </p><h1 id="b18d00b3-a555-4688-be54-fc81c65a8648" class="">chapter 2</h1><h2 id="3e4372d0-e67a-43aa-a3a2-56d58638b0e2" class="">2. API and HAL fundamental </h2><p id="28b4c01d-611d-48b3-9a39-21376d61b69f" class=""><strong>Take people behind the scenes - </strong>The <em>finished product </em>model of creativity is a relic of the pre-digital era. Where the only way artists could find an audience for their work was to show the finished product in all its glory. The internet has changed this. People really do want to see how the sausage gets made. Audiences want to see the person behind the product. </p><p id="efb6b429-8688-4ec8-98bf-3afd93b3b535" class=""><strong>Become a documentarian of what you do - </strong>As Gary Vaynerchuk says, “document, don’t create”. Share screenshots as you’re going along. Take photos of your process. Write down your thoughts in a notebook. Whether you share it or not, documenting your process has its own rewards. </p><h2 id="c6d15c56-f6c8-44f8-87fc-975b41547b57" class="">3. Share something small everyday </h2><p id="960d31b8-57d0-431d-9c0f-ef9702341f0f" class=""><strong>Sharing vs Oversharing - </strong>Share stuff that might be helpful or interesting or entertaining to someone on the other side of the screen. </p><p id="31410eb8-c63c-4f59-999c-99f027e52125" class="">I think of it as “Will this potentially help at least one person in the world? If so, I should share it.”</p><p id="b339a2db-1ef1-4ec2-bb7f-1f4fd04f028d" class=""><strong>Get your own domain name - </strong>You need a personal website. Yes, even you reading this now. You might not have anything to write yet. But trust me (and Austin) - you need a personal website. Go find a domain name, preferably www.[yourname].com, but if that’s not available, use another extension (eg: .co.uk, .com.pk, .io, .me etc, there are hundreds of them). Figure out how to install a blog on it (eg: Wordpress or Ghost, I prefer Ghost personally). Yes if you’ve never done this before it’ll take some time and you’ll have to do some Googling. But it’ll be one of the best investments you ever make with your time. </p><h2 id="d0143137-a704-4cda-95c4-7a3f21a8b125" class="">4. Open up your cabinet of curiosities </h2><p id="64b579ea-521b-441a-aeeb-0a755995fae2" class=""><strong>Share other people’s work - </strong>We all like different things. If you can share the stuff you like, if you can curate it for others, good things will happen. </p><p id="932d7056-5789-4e30-a45f-4b38f28400fc" class=""><strong>Credit is always due - </strong>Obviously, if you’re sharing other people’s work, you want to credit them. Attribution = providing context for what you’re sharing. It’s about putting little museum labels next to the stuff you share. Preferably attribute with a link. Eg: thanks <a href="https://austinkleon.com">Austin Kleon</a> for writing this book. </p><h2 id="94896a9e-9ece-47d5-b2b4-81b0c3b3767b" class="">5. Tell good stories</h2><p id="88ec49c2-ba27-4ba1-ab6c-ddc27f5148c2" class="">People want to read (and hear) good stories. You’ll become more effective at sharing yourself and your work if you can tell a good story.</p><figure id="4d60271d-c2d6-40b9-976a-ce1bb4c58b38" class="image"><a href="build%20reusable%20firmware%20026956dbc50948dda0d02f872cd94bdc/32186755-3088-49E2-9D31-6B6E99ABFC92.jpeg"><img style="width:1051px" src="build%20reusable%20firmware%20026956dbc50948dda0d02f872cd94bdc/32186755-3088-49E2-9D31-6B6E99ABFC92.jpeg"/></a></figure><p id="49988f17-0c44-4f7f-949d-0a9921f5253d" class=""><strong>Talk about yourself at parties - </strong>It’s okay to talk about yourself if people ask. Don’t think of it as an interrogation. Think of it as a chance to connect with someone who might be interested in your work. </p><h2 id="2b4b9e32-ab48-4217-93f9-824721b64582" class="">6. Teach what you know</h2><blockquote id="bfb04c99-85d6-4653-9065-5ac037e5414f" class="">The impulse to keep to yourself what you have learned is not only shameful, it is destructive. Anything you do not give freely and abundantly becomes lost to you. You open your safe and find ashes. -Annie Dillard</blockquote><p id="a4e51478-51b1-4538-8732-e70af2e982ff" class="">Teaching people doesn’t take away from what you do, it adds to it. When you teach someone how to do your work, you’re actually generating more interest in your work. People will feel closer to it because you’re teaching them what you know. </p><p id="30114da4-e822-48b8-99d4-a04f94023719" class="">When you teach and share your work with others, you’ll get an education in return. People will see your stuff, connect with it, and reach out to you with recommendations and their own thoughts. This is magic. </p><h2 id="75734a8a-54e6-47f0-add9-f91f0f6368fa" class="">7. Don’t turn into human spam </h2><blockquote id="f60a9754-2ef6-433c-bc69-79a4fbc532d8" class="">If you want fans, you have to be a fan first. If you want to be accepted by a community, you have to first be a good citizen of that community. If you’re only pointing to your own stuff online, you’re doing it wrong. You have to be a connector. The writer Blake Butler calls this being an open node. If you want to get, you have to give. If you want to be noticed, you have to notice. Shut up and listen once in a while. Be thoughtful. Be considerate. Don’t turn into human spam. Be an open node.</blockquote><p id="9dfd3a61-6973-4e8c-a7a0-d55fc9775ad1" class=""><strong>You want hearts, not eyeballs - </strong>Stop caring about how many people read your stuff and how many people follow you online. </p><p id="c97f350d-24f8-404d-9fc6-02161856fb73" class=""><strong>The vampire test - </strong>“Whatever excites you, go do it. Whatever drains you, stop doing it” - Derek Sivers </p><p id="76746d74-536f-4ed5-a628-b47507c0c793" class=""><strong>Meet people IRL </strong>- Make online friends, and then meet them in real life. Meet-ups are great. If you know someone online and you’re in the same town, grab a coffee with them. When you’re travelling, let your online friends know you’re going to be around. </p><blockquote id="39aaaf19-7ec4-48cb-89e9-6cb81ed06b6a" class="">Meeting people online is awesome, but turning them into IRL friends is even better. </blockquote><p id="bca5e2e2-a328-4ec8-9cfe-dcc842ccea07" class=""><em>In fact, as I write this in a coffee shop in central Cambridge, I’m sitting with a guy called Ross. He’s a doctor with an interest in medical education, and he found my work online. He emailed me saying he was in Cambridge and wanted to grab lunch. We’ve been hanging out for the past 4 hours - first we grabbed lunch at a burger place, and then we came over to this coffee shop. I’m writing this book summary. He’s sitting opposite me reading a book that I recommended (The Third Door by Alex Banayan). We’re IRL friends now :)</em></p><h2 id="2bc58a56-890b-40b8-acc9-038cf368ced3" class="">8. Learn to take a punch</h2><p id="23b7120b-6789-4028-8fc5-cb13539763b8" class="">When you put stuff out there, you’re going to get a bit of criticism. This is natural. Learn to take it. Don’t let the fear of haters stop you from putting yourself out there. They’re a tiny minority, and they have no real power over you. </p><blockquote id="0ecc5c5a-b7f6-4841-8eb2-d87e9dea99a9" class="">Compulsive avoidance of embarrassment is a form of suicide. - Colin Marshall. </blockquote><p id="1e729890-fa21-4b41-894f-269af9cf97f6" class="">Don’t spend your life avoiding vulnerability. If you do, you and your work will never truly connect with people. </p><h2 id="77fca657-331d-4fea-8535-ec947a1d4a1f" class="">9. Sell out </h2><p id="cbca984c-3051-4a5a-9e48-7ddf14edd420" class="">We need to get over our “starving artist” romanticism. There’s nothing wrong or evil about money. Charging money for stuff doesn’t hamper your creativity. </p><blockquote id="36e17ae5-604f-47bc-b087-59f6fcb2e2c0" class="">Michaelangelo painted the Sistine Chapel ceiling because the pop commissioned him. </blockquote><p id="df8f3cfc-fc4f-41a0-a2d4-9c06df118f63" class="">But at the same time, be careful about selling the work you love. </p><blockquote id="e21ef4e6-a6c1-43fc-ac3b-af0cdcb987a9" class="">Beware of selling the things that you love: When people are asked to get out their wallets, you find out how much they really value what you do. My friend John T. Unger tells this terrific story from his days as a street poet. He would do a poetry reading and afterward some guy would come up to him and say, “Your poem changed my life, man!” And John would say, “Oh, thanks. Want to buy a book? It’s five dollars.” And the guy would take the book, hand it back to John, and say, “Nah, that’s okay.” To which John would respond, “Geez, how much is your life worth?”</blockquote><p id="2b72b398-24d4-4267-aa28-41f355c1718b" class=""><strong>Keep a mailing list - </strong>Even if you don’t have anything to sell right now, keep a mailing list. There are people who run multimillion dollar businesses off their mailing lists. The model is simple - give away free great free stuff on your website. Collect the emails of people who enjoy reading it. When you have something remarkable to sell or share, send them an email letting them know. </p><p id="34941690-7a0f-4ffb-a72e-2cc2a26c59c1" class=""><strong>Pay it forward - </strong>When you have success, help people who reach out to you. Help people who helped you get where you are. </p><p id="a03658e1-85cf-4783-8b31-1540cb64e561" class=""><strong>Caveat - </strong>Don’t sacrifice your art or your work for the sake of answering emails. Be as generous as you can, but selfish enough to get your work done. </p><h2 id="a71c3ea1-dfaa-4788-87f8-347a7f76505c" class="">10. Stick around </h2><p id="c9d80a72-476a-4e2a-82e0-ce68ce9a763c" class=""><strong>Don’t quit - </strong>Keep doing your work, and keep sharing. </p><p id="3ba3895a-1029-4b34-a6a5-3e43eb9685a2" class=""><strong>Take sabbaticals.</strong></p><p id="4fa6c119-33fe-42c5-b11e-fe4526d412db" class="">Don’t be afraid to change things up. It’s not really starting over. You’re still keeping everything you learned before. You’re just starting from chapter one again. </p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
