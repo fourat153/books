@@ -25,13 +25,13 @@ This project represents my wonderful learning experience and how I was so patien
 
 - Chapter 1: Introducing C ![image](https://progress-bar.dev/100/?title=No_Exercises&color=bababa)
 - [Chapter 2: C Fundamentals](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch02_C_Fundamentals) ![image](https://progress-bar.dev/1/?scale=18&suffix=)
-- Chapter 3: Formatted Input/Output ![image](https://progress-bar.dev/0/?scale=12&suffix=)
-- Chapter 4: Expressions ![image](https://progress-bar.dev/0/?scale=21&suffix=)
-- [Chapter 5: Selection Statements](Ch05_Selection_Statements) ![image](https://progress-bar.dev/4/?scale=22&suffix=)
-- [Chapter 6: Loops](Ch06_Loops) ![image](https://progress-bar.dev/1/?scale=26&suffix=)
-- [Chapter 7: Basic Types](Ch07_Basic_Types) ![image](https://progress-bar.dev/4/?scale=30&suffix=)
-- [Chapter 8: Arrays](Ch08_Arrays) ![image](https://progress-bar.dev/5/?scale=28&suffix=)
-- [Chapter 9: Functions](Ch09_Functions) ![image](https://progress-bar.dev/100/)
+- [Chapter 3: Formatted Input/Output](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch03_Formated_input_output)![image](https://progress-bar.dev/0/?scale=12&suffix=)
+- [Chapter 4: Expressions](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch04_Expressions) ![image](https://progress-bar.dev/0/?scale=21&suffix=)
+- [Chapter 5: Selection Statements](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch05_Selection_Statements) ![image](https://progress-bar.dev/4/?scale=22&suffix=)
+- [Chapter 6: Loops](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch06_Loops) ![image](https://progress-bar.dev/1/?scale=26&suffix=)
+- [Chapter 7: Basic Types](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch07_Basic_types) ![image](https://progress-bar.dev/4/?scale=30&suffix=)
+- [Chapter 8: Arrays](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch08_Array) ![image](https://progress-bar.dev/5/?scale=28&suffix=)
+- [Chapter 9: Functions](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch09_Functions) ![image](https://progress-bar.dev/100/)
 - [Chapter 10: Program Organization](Ch10_Program_Organization) ![image](https://progress-bar.dev/100/)
 
 ### Advanced Features of C
