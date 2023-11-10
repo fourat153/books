@@ -24,7 +24,7 @@ This project represents my wonderful learning experience and how I was so patien
 ### Basic Features of C
 
 - Chapter 1: Introducing C ![image](https://progress-bar.dev/100/?title=No_Exercises&color=bababa)
-- [Chapter 2: C Fundamentals](Ch02_C_Fundamentals) ![image](https://progress-bar.dev/1/?scale=18&suffix=)
+- [Chapter 2: C Fundamentals](https://github.com/fourat153/books/tree/main/C_Programming_A_Modern_Approach_Second%20Edition_Solutions/Ch02_C_Fundamentals) ![image](https://progress-bar.dev/1/?scale=18&suffix=)
 - Chapter 3: Formatted Input/Output ![image](https://progress-bar.dev/0/?scale=12&suffix=)
 - Chapter 4: Expressions ![image](https://progress-bar.dev/0/?scale=21&suffix=)
 - [Chapter 5: Selection Statements](Ch05_Selection_Statements) ![image](https://progress-bar.dev/4/?scale=22&suffix=)
