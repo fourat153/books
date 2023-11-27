@@ -3,7 +3,7 @@
 
 ## Contents
 
-### build reusable firmware  ![image](https://progress-bar.dev/100/?title=In_Progress&color=ff00ff)
+### build reusable firmware  ![image](https://progress-bar.dev/10/?title=In_Progress&color=ff00ff)
 
 - [build reusable firmware](https://github.com/fourat153/books/tree/main/build_reusable_firmware) ![image](https://progress-bar.dev/100/)
         
